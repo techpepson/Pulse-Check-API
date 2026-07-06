@@ -19,7 +19,7 @@ export class HealthController {
       dbStatus = 'DOWN';
       errorMsg = error.message;
     }
-
+    
     const uptimeSeconds = Math.floor((Date.now() - this.startTime) / 1000);
     const memoryUsage = process.memoryUsage();
 

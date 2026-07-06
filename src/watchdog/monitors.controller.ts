@@ -1,4 +1,14 @@
-import { Controller, Post, Get, Body, Param, NotFoundException, BadRequestException, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Body,
+  Param,
+  NotFoundException,
+  BadRequestException,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { WatchdogService } from './watchdog.service';
 
 @Controller('monitors')
@@ -15,13 +25,19 @@ export class MonitorsController {
       throw new BadRequestException('Invalid or missing monitor ID');
     }
     if (timeout === undefined || typeof timeout !== 'number' || timeout <= 0) {
-      throw new BadRequestException('Invalid or missing timeout duration (must be a positive number of seconds)');
+      throw new BadRequestException(
+        'Invalid or missing timeout duration (must be a positive number of seconds)',
+      );
     }
     if (!alert_email || typeof alert_email !== 'string') {
       throw new BadRequestException('Invalid or missing alert email');
     }
 
-    const monitor = await this.watchdogService.registerMonitor(id, timeout, alert_email);
+    const monitor = await this.watchdogService.registerMonitor(
+      id,
+      timeout,
+      alert_email,
+    );
     return {
       message: `Monitor for device '${id}' registered successfully. Countdown set to ${timeout} seconds.`,
       monitor,

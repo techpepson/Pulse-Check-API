@@ -1,4 +1,9 @@
-import { Injectable, OnModuleInit, OnModuleDestroy, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  OnModuleInit,
+  OnModuleDestroy,
+  Logger,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
@@ -19,18 +24,25 @@ export class WatchdogService implements OnModuleInit, OnModuleDestroy {
           const expiresAt = new Date(monitor.expiresAt);
           if (expiresAt <= now) {
             // Already expired while offline, transition immediately
-            this.logger.warn(`Monitor ${monitor.id} expired while server was offline. Triggering alert...`);
+            this.logger.warn(
+              `Monitor ${monitor.id} expired while server was offline. Triggering alert...`,
+            );
             await this.triggerAlert(monitor.id);
           } else {
             // Calculate remaining time and schedule
             const remainingMs = expiresAt.getTime() - now.getTime();
             this.scheduleTimer(monitor.id, remainingMs);
-            this.logger.log(`Rescheduled timer for ${monitor.id} with ${Math.round(remainingMs / 1000)}s remaining.`);
+            this.logger.log(
+              `Rescheduled timer for ${monitor.id} with ${Math.round(remainingMs / 1000)}s remaining.`,
+            );
           }
         }
       }
     } catch (error) {
-      this.logger.error('Failed to initialize watchdog timers on startup:', error);
+      this.logger.error(
+        'Failed to initialize watchdog timers on startup:',
+        error,
+      );
     }
   }
 
@@ -42,7 +54,11 @@ export class WatchdogService implements OnModuleInit, OnModuleDestroy {
     this.timers.clear();
   }
 
-  async registerMonitor(id: string, timeoutSeconds: number, alertEmail: string) {
+  async registerMonitor(
+    id: string,
+    timeoutSeconds: number,
+    alertEmail: string,
+  ) {
     const now = new Date();
     const expiresAt = new Date(now.getTime() + timeoutSeconds * 1000);
 
@@ -71,7 +87,9 @@ export class WatchdogService implements OnModuleInit, OnModuleDestroy {
     // Schedule new timer
     this.scheduleTimer(id, timeoutSeconds * 1000);
 
-    this.logger.log(`Registered monitor for ${id} with timeout ${timeoutSeconds}s.`);
+    this.logger.log(
+      `Registered monitor for ${id} with timeout ${timeoutSeconds}s.`,
+    );
     return monitor;
   }
 
@@ -108,14 +126,18 @@ export class WatchdogService implements OnModuleInit, OnModuleDestroy {
           resolvedAt: now,
         },
       });
-      this.logger.log(`Monitor ${id} recovered from DOWN status. Resolved active incidents.`);
+      this.logger.log(
+        `Monitor ${id} recovered from DOWN status. Resolved active incidents.`,
+      );
     }
 
     // Reset / rescheduling timer
     this.clearTimer(id);
     this.scheduleTimer(id, monitor.timeout * 1000);
 
-    this.logger.log(`Heartbeat received for ${id}. Reset timer to ${monitor.timeout}s.`);
+    this.logger.log(
+      `Heartbeat received for ${id}. Reset timer to ${monitor.timeout}s.`,
+    );
     return updatedMonitor;
   }
 

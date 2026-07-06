@@ -244,7 +244,7 @@ Exposes basic diagnostics for monitoring systems, reporting uptime, database ava
 
 ## 3. Developer's Choice: Extra Features
 
-To make this sentinel production-ready, we implemented the following robustness additions:
+To make this sentinel production-ready, I implemented the following robustness additions:
 
 ### 1. In-Memory Rescheduling with Startup DB Recovery
 Unlike simple in-memory APIs that lose all state on a restart, this service utilizes a persistent database to store the state of all devices. On startup, `WatchdogService` runs an initialization hook:

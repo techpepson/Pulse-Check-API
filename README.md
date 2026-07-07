@@ -1,6 +1,6 @@
 # CritMon Watchdog Sentinel (Pulse-Check API)
 
-A stateful, production-grade Dead Man's Switch backend service built using NestJS, Prisma, and PostgreSQL. It monitors remote devices (e.g., solar farms, weather stations) that send hourly heartbeats. If a device fails to ping before its custom timer expires, the sentinel automatically triggers an alert, logs the outage, and tracks it as an incident.
+A stateful, production-grade Dead Man's Switch backend service built using NestJS, Prisma, and PostgreSQL. It monitors remote devices (e.g., solar farms, weather stations) that send timely heartbeats. If a device fails to ping before its custom timer expires, the sentinel automatically triggers an alert, logs the outage, and tracks it as an incident.
 
 ---
 
